@@ -2,7 +2,7 @@
   "openrpc": "1.0.0",
   "info": {
     "version": "1.4.4-alpha",
-    "title": "Ethereum Cash JSON-RPC",
+    "title": "Electrum Cash JSON-RPC",
     "description": "This API specification for Electrum-Cash JSON-RPC",
     "license": {
       "name": "The MIT License (MIT)",
