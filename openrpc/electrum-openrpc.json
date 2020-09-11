@@ -41,8 +41,8 @@
             "name": "blockchain.address.get_balance",
             "value": [
               {
-                "confirmed": 103873966,
-                "unconfirmed": 236844
+                "confirmed": 1313538732,
+                "unconfirmed": 0
               }
             ]
           }
@@ -531,7 +531,7 @@
       "Nonce": {
         "title": "nonce",
         "description": "A number only to be used once",
-        "type":"integer"
+        "type": "integer"
       },
       "Null": {
         "title": "null",
