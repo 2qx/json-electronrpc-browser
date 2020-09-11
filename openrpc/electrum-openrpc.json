@@ -11,91 +11,8 @@
   },
   "servers": [
     {
-      "url": "https://bch.crypto.mldlabs.com:50002"
-    },
-    {
-      "url": "https://bch.disdev.org:50002"
-    },
-    {
-      "url": "https://bch.imaginary.cash:50002",
-      "name": "bch.imaginary.cash"
-    },
-    {
-      "url": "https://bch0.kister.net:50002",
-      "name": "bch0.kister.net"
-    },
-    {
-      "url": "https://bch.loping.net:50002",
-      "name": "bch.loping.net"
-    },
-    {
-      "url": "https://j2tjfxntnsqpojaamnndgmfrc6lh3thattnlpc2xx53h2ojoi7agccid.onion:50002",
-      "name": "bch.loping.net"
-    },
-    {
-      "url": "https://bch.soul-dev.com:50002"
-    },
-    {
-      "url": "https://bitcoincash.quangld.com:50002"
-    },
-    {
-      "url": "https://blackie.c3-soft.com:50002"
-    },
-    {
-      "url": "https://electron.jochen-hoenicke.de:50002"
-    },
-    {
-      "url": "https://electroncash.dk:50002"
-    },
-    {
-      "url": "https://bch2.electroncash.dk:50002"
-    },
-    {
-      "url": "https://electrum.imaginary.cash:50002"
-    },
-    {
-      "url": "https://ec-bcn.criptolayer.net:50002"
-    },
-    {
-      "url": "https://electrumx-cash.1209k.com:50002"
-    },
-    {
-      "url": "https://greedyhog.mooo.com:50002"
-    },
-    {
-      "url": "https://7nshufncf3nmp7pa42oqhnj6whsjgo2eok4jveex62tczuhvqur5ciad.onion:50002",
-      "name": "electrum.imaginary.cash"
-    },
-    {
-      "url": "https://kisternetg2pq7wx.onion:50002"
-    },
-    {
-      "url": "https://bxdp2p6abpqt5etc.onion:50002"
-    },
-    {
-      "url": "https://jh3jgcrwweh6yvmprtjnp72u2hqn34nlftlg3msrr4vmlapft4yvt2id.onion:50002"
-    },
-    {
-      "url": "https://electroncash.de:50002"
-    },
-    {
-      "url": "https://jktsologn7uprtwn7gsgmwuddj6rxsqmwc2vaug7jwcwzm2bxqnfpwad.onion:50002",
-      "name": "electroncash.de"
-    },
-    {
-      "url": "https://fulcrum.fountainhead.cash:50002"
-    },
-    {
-      "url": "https://electrs.bitcoinunlimited.info:50002"
-    },
-    {
-      "url": "https://bch.cyberbits.eu:50002"
-    },
-    {
-      "url": "https://bitcoincash.network:50002"
-    },
-    {
-      "url": "https://electrumx-bch.cryptonermal.net:50002"
+      "url": "wss://bch.imaginary.cash:50004",
+      "name": "wss bch.imaginary.cash"
     }
   ],
   "methods": [
@@ -105,19 +22,24 @@
       "description": "Return the confirmed and unconfirmed balances of a Bitcoin Cash address.",
       "params": [
         {
-          "name": "address",
-          "required": true,
-          "description": "The cash address",
-          "schema": {
-            "$ref": "#/components/schemas/Address"
-          }
+          "$ref": "#/components/schemas/Address"
         }
       ],
       "result": {
-        "name": "getBalanceResult",
-        "schema": {
-          "$ref": "#/components/schemas/Integer"
+        "$ref": "#/components/schemas/ConfirmedAndUnconfirmed"
+      }
+    },
+    {
+      "name": "blockchain.address.get_mempool",
+      "summary": "Get address mempool transactions",
+      "description": "Return the unconfirmed transactions of a Bitcoin Cash address.",
+      "params": [
+        {
+          "$ref": "#/components/schemas/Address"
         }
+      ],
+      "result": {
+        "$ref": "#/components/contentDescriptors/MempoolTransactions"
       }
     }
   ],
@@ -135,12 +57,14 @@
       },
       "Integer": {
         "title": "integer",
-        "type": "string",
-        "pattern": "^[a-fA-F0-9]",
-        "description": "Hex representation of the integer"
+        "type": "integer"
       },
       "Address": {
         "title": "address",
+        "required": [
+          "address"
+        ],
+        "summary": "An address in cashaddr format",
         "$ref": "#/components/schemas/CashaddrFormat",
         "description": "The address as a Cash Address string (with or without prefix). Some server implementations may also support Legacy (base58) addresses but are not required to do so by this specification."
       },
@@ -154,8 +78,80 @@
       },
       "CashaddrFormat": {
         "type": "string",
-        "format": "((bitcoincash|bchreg|bchtest):)?(q|p)[a-z0-9]{41}",
+        "pattern": "((bitcoincash|bchreg|bchtest):)?(q|p)[a-z0-9]{41}",
         "example": "bchtest:qpttdv3qg2usm4nm7talhxhl05mlhms3ys43u76rn0"
+      },
+      "ConfirmedAndUnconfirmed": {
+        "name": "Balance",
+        "description": "The confirmed and unconfirmed balance in satoshis",
+        "type": "object",
+        "schema": {
+          "properties": {
+            "confirmed": {
+              "$ref": "#/components/schemas/Integer",
+              "description": "Amount included in blocks"
+            },
+            "unconfirmed": {
+              "$ref": "#/components/schemas/Integer",
+              "description": "Amount in mempool"
+            }
+          }
+        }
+      },
+      "MempoolTransaction": {
+        "name": "A mempool transaction",
+        "type": "object",
+        "description": "Details of an unconfirmed transaction in mempool",
+        "schema": {
+          "properties": {
+            "height": {
+              "$ref": "#/components/schemas/Integer",
+              "description": "Amount included in blocks"
+            },
+            "tx_hash": {
+              "$ref": "#/components/schemas/TransactionHashFormatBE",
+              "description": "The transaction hash in hexadecimal."
+            },
+            "fee": {
+              "$ref": "#/components/schemas/Integer",
+              "description": "The transaction fee in minimum coin units (satoshis)."
+            }
+          }
+        }
+      },
+      "MempoolTransactions": {
+        "name": "Mempool transactions",
+        "description": "A list of mempool transactions",
+        "schema": {
+          "title": "setOfTransactions",
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/MempoolTransaction"
+          }
+        }
+      }
+
+    },
+    "contentDescriptors": {
+      "MempoolTransactions": {
+        "name": "Mempool transactions",
+        "description": "A list of mempool transactions",
+        "schema": {
+          "title": "setOfTransactions",
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/MempoolTransaction"
+          }
+        }
+      },
+      "TransactionHashFormatBE": {
+        "name": "A transaction hash",
+        "description": "A the double sha256 hash of the transaction, as a Big-Endian hexadecimal ",
+        "schema":{
+          "pattern": "[0-9A-Fa-f]{64}",
+          "example": "0e3e2357e806b6cdb1f70b54c3a3a17b6714ee1f0e68bebb44a74b1efd512098",
+          "type": "string"  
+        }
       }
     }
   }
