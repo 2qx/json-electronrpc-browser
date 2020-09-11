@@ -1,9 +1,9 @@
 {
   "openrpc": "1.0.0",
   "info": {
-    "version": "1.4.4",
+    "version": "1.4.4-alpha",
     "title": "Ethereum Cash JSON-RPC",
-    "description": "This API lets you interact with Electrum Cash client via Electrum Cash JSON-RPC",
+    "description": "This API specification for Electrum-Cash JSON-RPC",
     "license": {
       "name": "The MIT License (MIT)",
       "url": "https://raw.githubusercontent.com/2qx/json-electronrpc-browser/main/LICENSE"
@@ -18,7 +18,7 @@
   "methods": [
     {
       "name": "blockchain.address.get_balance",
-      "summary": "Get an address balance",
+      "summary": "Get address balance",
       "description": "Return the confirmed and unconfirmed balances of a Bitcoin Cash address.",
       "params": [
         {
@@ -26,12 +26,55 @@
         }
       ],
       "result": {
-        "$ref": "#/components/schemas/ConfirmedAndUnconfirmed"
-      }
+        "$ref": "#/components/contentDescriptors/ConfirmedAndUnconfirmed"
+      },
+      "examples": [
+        {
+          "name": "blockchain.address.get_balance",
+          "params": [
+            {
+              "name": "blockchain.address.get_balance",
+              "value": "qp6e6enhpy0fwwu7nkvlr8rgl06ru0c9lywalz8st5"
+            }
+          ],
+          "result": {
+            "name": "blockchain.address.get_balance",
+            "value": [
+              {
+                "confirmed": 103873966,
+                "unconfirmed": 236844
+              }
+            ]
+          }
+        }
+      ],
+      "tags": [
+        {
+          "name": "v1.4.3+"
+        }
+      ]
+    },
+    {
+      "name": "blockchain.address.get_history",
+      "summary": "Get address history",
+      "description": "Return the confirmed and unconfirmed history of a Bitcoin Cash address.",
+      "params": [
+        {
+          "$ref": "#/components/schemas/Address"
+        }
+      ],
+      "result": {
+        "$ref": "#/components/schemas/Null"
+      },
+      "tags": [
+        {
+          "name": "v1.4.3+"
+        }
+      ]
     },
     {
       "name": "blockchain.address.get_mempool",
-      "summary": "Get address mempool transactions",
+      "summary": "Get mempool transactions by address",
       "description": "Return the unconfirmed transactions of a Bitcoin Cash address.",
       "params": [
         {
@@ -40,6 +83,446 @@
       ],
       "result": {
         "$ref": "#/components/contentDescriptors/MempoolTransactions"
+      },
+      "examples": [
+        {
+          "name": "blockchain.address.get_mempool",
+          "params": [
+            {
+              "name": "blockchain.address.get_mempool",
+              "value": "qp6e6enhpy0fwwu06ru0c9lywa7nkvlr8rgllz8st5"
+            }
+          ],
+          "result": {
+            "name": "blockchain.address.get_mempool",
+            "value": [
+              {
+                "fee": 416,
+                "height": 0,
+                "tx_hash": "fc1e4a2365e3bf2fe6a20ab23731b1deba2789d40c092a2d55ea0242a50b6f08"
+              }
+            ]
+          }
+        }
+      ],
+      "tags": [
+        {
+          "name": "v1.4.3+"
+        }
+      ]
+    },
+    {
+      "name": "blockchain.address.get_scripthash",
+      "summary": "Get an address scripthash",
+      "description": "Translate a Bitcoin Cash address to a script_hash. This method is potentially useful for clients preferring to work with script hashes but lacking the local libraries necessary to generate them.",
+      "params": [],
+      "result": {
+        "name": "TODO",
+        "schema": {
+          "ref": "#/components/schemas/Null"
+        }
+      },
+      "tags": [
+        {
+          "name": "v1.4.3+"
+        }
+      ]
+    },
+    {
+      "name": "blockchain.address.listunspent",
+      "summary": "Get unspet outputs by address",
+      "description": "Return an ordered list of UTXOs sent to a Bitcoin Cash address.",
+      "params": [
+        {
+          "$ref": "#/components/schemas/Address"
+        }
+      ],
+      "result": {
+        "name": "TODO",
+        "schema": {
+          "ref": "#/components/schemas/Null"
+        }
+      },
+      "tags": [
+        {
+          "name": "v1.4.3+"
+        }
+      ]
+    },
+    {
+      "name": "blockchain.address.subscribe",
+      "summary": "Subscribe to an address stream",
+      "description": "Subscribe to a Bitcoin Cash address.",
+      "params": [
+        {
+          "$ref": "#/components/schemas/Address"
+        }
+      ],
+      "result": {
+        "name": "TODO",
+        "schema": {
+          "ref": "#/components/schemas/Null"
+        }
+      },
+      "tags": [
+        {
+          "name": "v1.4.3+"
+        }
+      ]
+    },
+    {
+      "name": "blockchain.address.unsubscribe",
+      "summary": "Unsubscribe from an address stream",
+      "description": "Unsubscribe from a Bitcoin Cash address, preventing future notifications if its status changes.",
+      "params": [
+        {
+          "$ref": "#/components/schemas/Address"
+        }
+      ],
+      "result": {
+        "name": "TODO",
+        "schema": {
+          "ref": "#/components/schemas/Null"
+        }
+      }
+    },
+    {
+      "name": "blockchain.block.header",
+      "summary": "Get a block header",
+      "description": "Return the block header at the given height.",
+      "params": [
+        {
+          "$ref": "#/components/schemas/Integer"
+        }
+      ],
+      "result": {
+        "name": "TODO",
+        "schema": {
+          "ref": "#/components/schemas/Null"
+        }
+      },
+      "tags": [
+        {
+          "name": "v1.2+"
+        }
+      ]
+    },
+    {
+      "name": "blockchain.block.headers",
+      "summary": "Get a chunk of headers",
+      "description": "Return a concatenated chunk of block headers from the main chain.",
+      "params": [],
+      "result": {
+        "name": "TODO",
+        "schema": {
+          "ref": "#/components/schemas/Null"
+        }
+      }
+    },
+    {
+      "name": "blockchain.estimatefee",
+      "summary": "Get a current fee estimate",
+      "description": "Return the estimated transaction fee per kilobyte for a transaction to be confirmed within a certain number of blocks.",
+      "params": [],
+      "result": {
+        "name": "TODO",
+        "schema": {
+          "ref": "#/components/schemas/Null"
+        }
+      }
+    },
+    {
+      "name": "blockchain.headers.subscribe",
+      "summary": "Subscribe to headers",
+      "description": "Subscribe to receive block headers when a new block is found.",
+      "params": [],
+      "result": {
+        "name": "TODO",
+        "schema": {
+          "ref": "#/components/schemas/Null"
+        }
+      }
+    },
+    {
+      "name": "blockchain.relayfee",
+      "summary": "Get minimum fee estimate",
+      "description": "Return the minimum fee a low-priority transaction must pay in order to be accepted to the daemon's memory pool.",
+      "params": [],
+      "result": {
+        "name": "TODO",
+        "schema": {
+          "ref": "#/components/schemas/Null"
+        }
+      }
+    },
+    {
+      "name": "blockchain.scripthash.get_balance",
+      "summary": "Get scripthash balance",
+      "description": "Return the confirmed and unconfirmed balances of a :ref:`script hash <script hashes>`.",
+      "params": [],
+      "result": {
+        "$ref": "#/components/contentDescriptors/ConfirmedAndUnconfirmed"
+      },
+      "tags": [
+        {
+          "name": "v1.1+"
+        }
+      ]
+    },
+    {
+      "name": "blockchain.scripthash.get_mempool",
+      "summary": "Get mempool transactions by script hash",
+      "description": "Return the unconfirmed transactions of a script hash.",
+      "params": [],
+      "result": {
+        "$ref": "#/components/contentDescriptors/MempoolTransactions"
+      },
+      "tags": [
+        {
+          "name": "v1.1+"
+        }
+      ]
+    },
+    {
+      "name": "blockchain.scripthash.listunspent",
+      "summary": "Get unspent outputs",
+      "description": "Return an ordered list of UTXOs sent to a script hash.",
+      "params": [],
+      "result": {
+        "name": "TODO",
+        "schema": {
+          "ref": "#/components/schemas/Null"
+        }
+      },
+      "examples": [
+        {
+          "name": "blockchain.scripthash.listunspent",
+          "params": [
+            {
+              "name": "blockchain.scripthash.listunspent",
+              "value": "qp6e6enhpy0fwwu06ru0c9lywa7nkvlr8rgllz8st5"
+            }
+          ],
+          "result": {
+            "name": "blockchain.scripthash.listunspent",
+            "value": [
+              {
+                "tx_pos": 0,
+                "value": 45318048,
+                "tx_hash": "9f2c45a12db0144909b5db269415f7319179105982ac70ed80d76ea79d923ebf",
+                "height": 437146
+              },
+              {
+                "tx_pos": 0,
+                "value": 919195,
+                "tx_hash": "3d2290c93436a3e964cfc2f0950174d8847b1fbe3946432c4784e168da0f019f",
+                "height": 441696
+              }
+            ]
+          }
+        }
+      ],
+      "tags": [
+        {
+          "name": "v1.1+"
+        }
+      ]
+    },
+    {
+      "name": "blockchain.scripthash.subscribe",
+      "summary": "Subscribe to a script hash stream.",
+      "description": "The client will receive a notification when the `status` of the script hash changes.",
+      "params": [],
+      "result": {
+        "name": "TODO",
+        "schema": {
+          "ref": "#/components/schemas/Null"
+        }
+      },
+      "tags": [
+        {
+          "name": "v1.1+"
+        }
+      ]
+    },
+    {
+      "name": "blockchain.scripthash.unsubscribe",
+      "summary": "Unsubscribe from a script hash stream.",
+      "description": "Unsubscribe from a script hash, preventing future notifications if its `status` changes.",
+      "params": [],
+      "result": {
+        "name": "TODO",
+        "schema": {
+          "ref": "#/components/schemas/Null"
+        }
+      },
+      "tags": [
+        {
+          "name": "v1.4.2+"
+        }
+      ]
+    },
+    {
+      "name": "blockchain.transaction.broadcast",
+      "summary": "Broadcast a transaction to the network.",
+      "description": "**Note** protocol version 1.0 (only) does not respond according to the JSON RPC specification if an error occurs.  If the daemon rejects the transaction, the result is the error message string from the daemon, as if the call were successful.  The client needs to determine if an error occurred by comparing the result to the expected transaction hash.",
+      "params": [],
+      "result": {
+        "name": "TODO",
+        "schema": {
+          "ref": "#/components/schemas/Null"
+        }
+      }
+    },
+    {
+      "name": "blockchain.transaction.get",
+      "summary": "Get a raw transaction.",
+      "params": [],
+      "result": {
+        "name": "TODO",
+        "schema": {
+          "ref": "#/components/schemas/Null"
+        }
+      }
+    },
+    {
+      "name": "blockchain.transaction.get_merkle",
+      "summary": "Get the merkle proof for a transaction",
+      "description": "Return the merkle branch to a confirmed transaction given its hash and height.",
+      "params": [],
+      "result": {
+        "name": "TODO",
+        "schema": {
+          "ref": "#/components/schemas/Null"
+        }
+      }
+    },
+    {
+      "name": "blockchain.transaction.id_from_pos",
+      "summary": "Get a transaction (with proof) by block and position",
+      "description": "Return a transaction hash and optionally a merkle proof, given a block height and a position in the block.",
+      "params": [],
+      "result": {
+        "name": "TODO",
+        "schema": {
+          "ref": "#/components/schemas/Null"
+        }
+      },
+      "tags": [
+        {
+          "name": "v1.4+"
+        }
+      ]
+    },
+    {
+      "name": "mempool.get_fee_histogram",
+      "summary": "Get the fee histogram",
+      "description": "Return a histogram of the fee rates paid by transactions in the memory pool, weighted by transaction size.",
+      "params": [],
+      "result": {
+        "name": "TODO",
+        "schema": {
+          "ref": "#/components/schemas/Null"
+        }
+      },
+      "tags": [
+        {
+          "name": "v1.2+"
+        }
+      ]
+    },
+    {
+      "name": "server.add_peer",
+      "summary": "Announce a server",
+      "description": "A newly-started server uses this call to get itself into other servers' peers lists.  It **SHOULD NOT** be used by wallet clients.",
+      "params": [],
+      "result": {
+        "name": "TODO",
+        "schema": {
+          "ref": "#/components/schemas/Null"
+        }
+      },
+      "tags": [
+        {
+          "name": "v1.1+"
+        }
+      ]
+    },
+    {
+      "name": "server.banner",
+      "summary": "Show the console banner",
+      "description": "Return a banner to be shown in the Electrum console.",
+      "params": [],
+      "result": {
+        "name": "TODO",
+        "schema": {
+          "ref": "#/components/schemas/Null"
+        }
+      }
+    },
+    {
+      "name": "server.donation_address",
+      "summary": "Get the server donation address",
+      "description": "Return a server donation address.",
+      "params": [],
+      "result": {
+        "name": "TODO",
+        "schema": {
+          "ref": "#/components/schemas/Null"
+        }
+      }
+    },
+    {
+      "name": "server.features",
+      "summary": "Get the server features",
+      "description": "Return a list of features and services supported by the server.",
+      "params": [],
+      "result": {
+        "name": "TODO",
+        "schema": {
+          "ref": "#/components/schemas/Null"
+        }
+      }
+    },
+    {
+      "name": "server.peers.subscribe",
+      "summary": "Get a list of server peers",
+      "description": "Return a list of peer servers.  Despite the name this is not a subscription and the server must send no notifications.",
+      "params": [],
+      "result": {
+        "name": "TODO",
+        "schema": {
+          "ref": "#/components/schemas/Null"
+        }
+      }
+    },
+    {
+      "name": "server.ping",
+      "summary": "Ping the server",
+      "description": "Ping the server to ensure it is responding, and to keep the session alive.  The server may disconnect clients that have sent no requests for roughly 10 minutes.",
+      "params": [],
+      "result": {
+        "name": "TODO",
+        "schema": {
+          "ref": "#/components/schemas/Null"
+        }
+      },
+      "tags": [
+        {
+          "name": "v1.2+"
+        }
+      ]
+    },
+    {
+      "name": "server.version",
+      "summary": "Get the server version",
+      "description": "Identify the client to the server and negotiate the protocol version. Only the first :func:`server.version` message is accepted.",
+      "params": [],
+      "result": {
+        "name": "TODO",
+        "schema": {
+          "ref": "#/components/schemas/Null"
+        }
       }
     }
   ],
@@ -48,7 +531,7 @@
       "Nonce": {
         "title": "nonce",
         "description": "A number only to be used once",
-        "$ref": "#/components/schemas/Integer"
+        "type":"integer"
       },
       "Null": {
         "title": "null",
@@ -65,92 +548,72 @@
           "address"
         ],
         "summary": "An address in cashaddr format",
-        "$ref": "#/components/schemas/CashaddrFormat",
+        "type": "string",
+        "pattern": "((bitcoincash|bchreg|bchtest):)?(q|p)[a-z0-9]{41}",
+        "example": "bchtest:qpttdv3qg2usm4nm7talhxhl05mlhms3ys43u76rn0",
         "description": "The address as a Cash Address string (with or without prefix). Some server implementations may also support Legacy (base58) addresses but are not required to do so by this specification."
-      },
-      "Addresses": {
-        "title": "addresses",
-        "type": "array",
-        "description": "List of addresses",
-        "items": {
-          "$ref": "#/components/schemas/Address"
-        }
       },
       "CashaddrFormat": {
         "type": "string",
         "pattern": "((bitcoincash|bchreg|bchtest):)?(q|p)[a-z0-9]{41}",
         "example": "bchtest:qpttdv3qg2usm4nm7talhxhl05mlhms3ys43u76rn0"
       },
-      "ConfirmedAndUnconfirmed": {
-        "name": "Balance",
-        "description": "The confirmed and unconfirmed balance in satoshis",
+      "MempoolTransaction": {
+        "title": "Mempool transaction",
         "type": "object",
+        "properties": {
+          "height": {
+            "$ref": "#/components/schemas/Integer",
+            "description": "`0` if all inputs are confirmed, and `-1` otherwise."
+          },
+          "tx_hash": {
+            "$ref": "#/components/schemas/TransactionHash"
+          },
+          "fee": {
+            "$ref": "#/components/schemas/Integer",
+            "description": "The transaction fee in minimum coin units (satoshis)."
+          }
+        }
+      },
+      "TransactionHash": {
+        "description": "Transaction Hash",
+        "type": "string",
+        "pattern": "[0-9A-Fa-f]{64}",
+        "example": "0e3e2357e806b6cdb1f70b54c3a3a17b6714ee1f0e68bebb44a74b1efd512098"
+      }
+    },
+    "contentDescriptors": {
+      "MempoolTransactions": {
+        "name": "Mempool Transactions",
+        "description": "A list of mempool transactions in arbitrary order.",
+        "schema": {
+          "title": "List of transactions",
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/MempoolTransaction"
+          }
+        }
+      },
+      "ConfirmedAndUnconfirmed": {
+        "name": "Balances",
+        "description": "The confirmed and unconfirmed balance in satoshis",
         "schema": {
           "properties": {
             "confirmed": {
+              "title": "Confirmed",
               "$ref": "#/components/schemas/Integer",
               "description": "Amount included in blocks"
             },
             "unconfirmed": {
+              "title": "Unconfirmed",
               "$ref": "#/components/schemas/Integer",
               "description": "Amount in mempool"
             }
-          }
-        }
-      },
-      "MempoolTransaction": {
-        "name": "A mempool transaction",
-        "type": "object",
-        "description": "Details of an unconfirmed transaction in mempool",
-        "schema": {
-          "properties": {
-            "height": {
-              "$ref": "#/components/schemas/Integer",
-              "description": "Amount included in blocks"
-            },
-            "tx_hash": {
-              "$ref": "#/components/schemas/TransactionHashFormatBE",
-              "description": "The transaction hash in hexadecimal."
-            },
-            "fee": {
-              "$ref": "#/components/schemas/Integer",
-              "description": "The transaction fee in minimum coin units (satoshis)."
-            }
-          }
-        }
-      },
-      "MempoolTransactions": {
-        "name": "Mempool transactions",
-        "description": "A list of mempool transactions",
-        "schema": {
-          "title": "setOfTransactions",
-          "type": "array",
-          "items": {
-            "$ref": "#/components/schemas/MempoolTransaction"
-          }
-        }
-      }
-
-    },
-    "contentDescriptors": {
-      "MempoolTransactions": {
-        "name": "Mempool transactions",
-        "description": "A list of mempool transactions",
-        "schema": {
-          "title": "setOfTransactions",
-          "type": "array",
-          "items": {
-            "$ref": "#/components/schemas/MempoolTransaction"
-          }
-        }
-      },
-      "TransactionHashFormatBE": {
-        "name": "A transaction hash",
-        "description": "A the double sha256 hash of the transaction, as a Big-Endian hexadecimal ",
-        "schema":{
-          "pattern": "[0-9A-Fa-f]{64}",
-          "example": "0e3e2357e806b6cdb1f70b54c3a3a17b6714ee1f0e68bebb44a74b1efd512098",
-          "type": "string"  
+          },
+          "required": [
+            "confirmed",
+            "unconfirmed"
+          ]
         }
       }
     }
