@@ -1,18 +1,39 @@
 {
   "openrpc": "1.0.0",
   "info": {
-    "version": "1.4.4-alpha",
+    "version": "1.4.4-draft",
     "title": "Electrum Cash JSON-RPC",
-    "description": "This API specification for Electrum-Cash JSON-RPC",
+    "description": "API specification for Electrum-Cash JSON-RPC",
     "license": {
       "name": "The MIT License (MIT)",
       "url": "https://raw.githubusercontent.com/2qx/json-electronrpc-browser/main/LICENSE"
+    },
+    "contact": {
+      "name": "2qx",
+      "url": "https://github.com/2qx/json-electronrpc-browser/issues"
     }
   },
   "servers": [
     {
-      "url": "wss://bch.imaginary.cash:50004",
-      "name": "wss bch.imaginary.cash"
+      "url": "{protocol}://bch.imaginary.cash:{port}",
+      "name": "imaginary",
+      "variables": {
+        "protocol": {
+          "default": "wss",
+          "enum": [
+            "https",
+            "wss"
+          ],
+          "description": "transport protocol"
+        },
+        "port": {
+          "default": "50004",
+          "enum": [
+            "50002",
+            "50004"
+          ]
+        }
+      }
     }
   ],
   "methods": [
@@ -184,11 +205,7 @@
         }
       ],
       "result": {
-        "name": "Script hash",
-        "schema": {
-          "$ref": "#/components/contentDescriptors/ScriptHash"
-        }
-         
+        "$ref": "#/components/contentDescriptors/ScriptHash"
       },
       "tags": [
         {
@@ -206,11 +223,36 @@
         }
       ],
       "result": {
-        "name": "TODO",
-        "schema": {
-          "$ref": "#/components/schemas/Address"
-        }
+        "$ref": "#/components/contentDescriptors/UnspentOutputs"
       },
+      "examples": [
+        {
+          "name": "blockchain.address.listunspent",
+          "params": [
+            {
+              "name": "blockchain.address.listunspent",
+              "value": "qzflnqmhzzvuqdcpaxqks4welm8j3ggs9s9px4z3qr"
+            }
+          ],
+          "result": {
+            "name": "blockchain.address.listunspent",
+            "value": [
+              {
+                "tx_pos": 0,
+                "value": 45318048,
+                "tx_hash": "9f2c45a12db0144909b5db269415f7319179105982ac70ed80d76ea79d923ebf",
+                "height": 437146
+              },
+              {
+                "tx_pos": 0,
+                "value": 919195,
+                "tx_hash": "3d2290c93436a3e964cfc2f0950174d8847b1fbe3946432c4784e168da0f019f",
+                "height": 441696
+              }
+            ]
+          }
+        }
+      ],
       "tags": [
         {
           "name": "v1.4.3+"
@@ -438,7 +480,7 @@
     },
     {
       "name": "blockchain.scripthash.listunspent",
-      "summary": "Get unspent outputs",
+      "summary": "Get unspent outputs by script hash",
       "description": "Return an ordered list of UTXOs sent to a script hash.",
       "params": [
         {
@@ -446,10 +488,7 @@
         }
       ],
       "result": {
-        "name": "TODO",
-        "schema": {
-          "ref": "#/components/schemas/Null"
-        }
+        "$ref": "#/components/contentDescriptors/UnspentOutputs"
       },
       "examples": [
         {
@@ -457,7 +496,7 @@
           "params": [
             {
               "name": "blockchain.scripthash.listunspent",
-              "value": "qp6e6enhpy0fwwu06ru0c9lywa7nkvlr8rgllz8st5"
+              "value": "302fc274f9573e1526ff7c3ebe45074ecf10ccd2164da54120336c4c5f47192d"
             }
           ],
           "result": {
@@ -667,9 +706,10 @@
       "description": "Ping the server to ensure it is responding, and to keep the session alive.  The server may disconnect clients that have sent no requests for roughly 10 minutes.",
       "params": [],
       "result": {
-        "name": "TODO",
+        "name": "a null pong",
         "schema": {
-          "ref": "#/components/schemas/Null"
+          "title": "pong",
+          "type": "null"
         }
       },
       "tags": [
@@ -681,14 +721,52 @@
     {
       "name": "server.version",
       "summary": "Get the server version",
-      "description": "Identify the client to the server and negotiate the protocol version. Only the first :func:`server.version` message is accepted.",
-      "params": [],
-      "result": {
-        "name": "TODO",
-        "schema": {
-          "ref": "#/components/schemas/Null"
+      "description": "Identify the client to the server and negotiate the protocol version. Only the first `server.version` message is accepted.",
+      "params": [
+        {
+          "name": "client_version",
+          "required": false,
+          "summary": "String describing the client software",
+          "schema": {
+            "$ref": "#/components/schemas/ClientVersion"
+          }
+        },
+        {
+          "name": "protocol_version",
+          "required": false,
+          "summary": "[min,max] compatible versions, or string of one version",
+          "schema": {
+            "$ref": "#/components/schemas/ProtocolCompatibility"
+          }
         }
-      }
+      ],
+      "result": {
+        "$ref": "#/components/contentDescriptors/ServerVersionResponse"
+      },
+      "examples": [
+        {
+          "name": "Check the server version",
+          "params": [
+            {
+              "name": "server.version",
+              "value": [
+                "Open-Rpc Playground",
+                [
+                  "1.4",
+                  "1.5"
+                ]
+              ]
+            }
+          ],
+          "result": {
+            "name": "server.version",
+            "value": [
+              "Fulcrum 1.2.10",
+              "1.4"
+            ]
+          }
+        }
+      ]
     }
   ],
   "components": {
@@ -708,20 +786,50 @@
         "type": "integer"
       },
       "Address": {
-        "title": "address",
-        "required": [
-          "address"
-        ],
-        "summary": "An address in cashaddr format",
-        "type": "string",
-        "pattern": "((bitcoincash|bchreg|bchtest):)?(q|p)[a-z0-9]{41}",
-        "example": "bchtest:qpttdv3qg2usm4nm7talhxhl05mlhms3ys43u76rn0",
-        "description": "The address as a Cash Address string (with or without prefix). Some server implementations may also support Legacy (base58) addresses but are not required to do so by this specification."
+        "$ref": "#/components/contentDescriptors/Address"
       },
-      "CashaddrFormat": {
+      "ClientVersion": {
+        "title": "client version",
         "type": "string",
-        "pattern": "((bitcoincash|bchreg|bchtest):)?(q|p)[a-z0-9]{41}",
-        "example": "bchtest:qpttdv3qg2usm4nm7talhxhl05mlhms3ys43u76rn0"
+        "description": "Name of the software and current client version"
+      },
+      "ServerVersion": {
+        "title": "server version",
+        "type": "string",
+        "description": "Name of the server software and running version"
+      },
+      "ProtocolVersion": {
+        "title": "protocol version",
+        "type": "string",
+        "pattern": "^[0-9].[0-9]$",
+        "enum": [
+          "1.1",
+          "1.2",
+          "1.3",
+          "1.4"
+        ],
+        "description": "Protocol major and minor version"
+      },
+      "ProtocolCompatibility": {
+        "title": "compatible version(s)",
+        "oneOf": [
+          {
+            "title": "A single version",
+            "type": "string",
+            "pattern": "^[0-9].[0-9]$",
+            "description": "If protocol_min and protocol_max are the same, they can be passed as a single string rather than as an array of two strings."
+          },
+          {
+            "type": "array",
+            "title": "Version Range",
+            "maxItems": 2,
+            "minItems": 2,
+            "description": "An array [protocol_min, protocol_max], each of which is a string.",
+            "items": {
+              "$ref": "#/components/schemas/ProtocolVersion"
+            }
+          }
+        ]
       },
       "ConfirmedTransaction": {
         "title": "Confirmed transaction",
@@ -750,14 +858,14 @@
         ],
         "properties": {
           "height": {
-            "type":"integer",
+            "type": "integer",
             "description": "`0` if all inputs are confirmed, and `-1` otherwise."
           },
           "tx_hash": {
             "$ref": "#/components/schemas/TransactionHash"
           },
           "fee": {
-            "type":"integer",
+            "type": "integer",
             "description": "The transaction fee in minimum coin units (satoshis)."
           }
         }
@@ -767,6 +875,33 @@
         "type": "string",
         "pattern": "[0-9A-Fa-f]{64}",
         "example": "0e3e2357e806b6cdb1f70b54c3a3a17b6714ee1f0e68bebb44a74b1efd512098"
+      },
+      "UnspentOutput": {
+        "title": "Unspent Transaction Output",
+        "type": "object",
+        "required": [
+          "height",
+          "tx_pos",
+          "tx_hash",
+          "value"
+        ],
+        "properties": {
+          "height": {
+            "type": "integer",
+            "description": "The integer height of the block the transaction was confirmed in. `0` if the transaction is in the mempool."
+          },
+          "tx_hash": {
+            "$ref": "#/components/schemas/TransactionHash"
+          },
+          "tx_pos": {
+            "type": "integer",
+            "description": "The zero-based index of the output in the transaction's list of outputs."
+          },
+          "value": {
+            "type": "integer",
+            "description": "The amount in satoshis."
+          }
+        }
       }
     },
     "contentDescriptors": {
@@ -789,11 +924,11 @@
         "schema": {
           "properties": {
             "confirmed": {
-              "type":"integer",
+              "type": "integer",
               "description": "Amount included in blocks"
             },
             "unconfirmed": {
-              "type":"integer",
+              "type": "integer",
               "description": "Amount in mempool"
             }
           },
@@ -802,6 +937,20 @@
             "unconfirmed"
           ]
         }
+      },
+      "Address": {
+        "name": "Address",
+        "required": true,
+        "description": "The address as a Cash Address string (with or without prefix). Some server implementations may also support Legacy (base58) addresses but are not required to do so by this specification.",
+        "schema": {
+          "title": "address",
+          "type": "string",
+          "required": [],
+          "pattern": "((bitcoincash|bchreg|bchtest):)?(q|p)[a-z0-9]{41}",
+          "example": "bchtest:qpttdv3qg2usm4nm7talhxhl05mlhms3ys43u76rn0",
+          "description": "Big Endian hex string"
+        },
+        "summary": "A cashaddr passed as a string"
       },
       "ScriptHash": {
         "name": "Scripthash",
@@ -816,9 +965,26 @@
         "required": true,
         "description": "A script hash is the hash of the binary bytes of the locking script (ScriptPubKey), expressed as a hexadecimal string. The hash function to use is given by the “hash_function” member of server.features() (currently sha256() only). Like for block and transaction hashes, when converting the big-endian binary hash to a hexadecimal string the least-significant byte appears first, and the most-significant byte last."
       },
+      "ServerVersionResponse": {
+        "name": "Server Version Response",
+        "summary": "The type of server software and protocol compatibility",
+        "schema": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ServerVersion"
+              },
+              {
+                "$ref": "#/components/schemas/ProtocolCompatibility"
+              }
+            ]
+          }
+        }
+      },
       "TransactionHistory": {
         "name": "Transaction History",
-        "summary":"List of confirmed and unconfirmed transactions",
+        "summary": "List of confirmed and unconfirmed transactions",
         "description": "A list of confirmed transactions in blockchain order, with the output of Unconfirmed Transactions appended to the list.",
         "schema": {
           "title": "transactions",
@@ -833,6 +999,29 @@
               }
             ]
           }
+        }
+      },
+      "UnspentOutputs": {
+        "name": "Unspent Outputs",
+        "summary": "List of UTXOs",
+        "description": "A list of unspent outputs in blockchain order.  This function takes the mempool into account.  Mempool transactions paying to the address are included at the end of the list in an undefined order. Any output that is spent in the mempool does not appear.",
+        "schema": {
+          "title": "List of Utxos",
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/UnspentOutput"
+          }
+        }
+      },
+      "status": {
+        "summary": "SHA256 hash of concatenated transactions",
+        "name": "Status",
+        "description": "To calculate the status of a script hash (or address): \n\n1. order confirmed transactions to the script hash by increasing height (and position in the block if there are more than one in a block)\n\n2. form a string that is the concatenation of strings 'tx_hash:height:' for each transaction in order, where: tx_hash is the transaction hash in hexadecimal height is the height of the block it is in.\n3. Next, with mempool transactions in any order, append a similar string for those transactions, but where height is -1 if the transaction has at least one unconfirmed input, and 0 if all inputs are confirmed.\n\n4. The status of the script hash is the sha256() hash of the full string expressed as a hexadecimal string, or null if the string is empty because there are no transactions.",
+        "schema": {
+          "title": "status",
+          "type": "string",
+          "pattern": "[0-9A-Fa-f]{64}",
+          "description": "sha256 hash of concatenated transactions"
         }
       }
     }
