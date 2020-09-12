@@ -26,11 +26,11 @@
         }
       ],
       "result": {
-        "$ref": "#/components/contentDescriptors/ConfirmedAndUnconfirmed"
+        "$ref": "#/components/contentDescriptors/Balances"
       },
       "examples": [
         {
-          "name": "blockchain.address.get_balance",
+          "name": "Check get an address balance",
           "params": [
             {
               "name": "blockchain.address.get_balance",
@@ -64,8 +64,71 @@
         }
       ],
       "result": {
-        "$ref": "#/components/schemas/Null"
+        "$ref": "#/components/contentDescriptors/TransactionHistory"
       },
+      "examples": [
+        {
+          "name": "Check some old coinbase",
+          "params": [
+            {
+              "name": "blockchain.address.get_history",
+              "value": "qqalnrnlvw50hyy8r3r536nhxwd580unjv9kg5wnhc"
+            }
+          ],
+          "result": {
+            "name": "blockchain.address.get_history",
+            "value": [
+              [
+                {
+                  "height": 200004,
+                  "tx_hash": "acc3758bd2a26f869fcc67d48ff30b96464d476bca82c1cd6656e7d506816412"
+                },
+                {
+                  "height": 215008,
+                  "tx_hash": "f3e1bf48975b8d6060a9de8884296abb80be618dc00ae3cb2f6cee3085e09403"
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "name": "See what the memo `memo` address is doing ",
+          "params": [
+            {
+              "name": "blockchain.address.get_history",
+              "value": "qzdxp2z5yuxzlskafh2d8wsq7grg7rt46csg3qcn80"
+            }
+          ],
+          "result": {
+            "name": "blockchain.address.get_history",
+            "value": [
+              [
+                {
+                  "...": "confirmed truncated"
+                },
+                {
+                  "height": 652439,
+                  "tx_hash": "f49740a25351e794ed1fbc92550782c1f65daf97c3251f1a97263f73e0b9f80a"
+                },
+                {
+                  "height": 652439,
+                  "tx_hash": "fcde04d79392a8b5875d3e65dfd5471d4f09c94ca8978a0c5f1742ca090f1600"
+                },
+                {
+                  "fee": 192,
+                  "height": 0,
+                  "tx_hash": "2d581a4da53feab2f541c6b664a5051b034dd0925a90e77b5f487f9ae85d95bb"
+                },
+                {
+                  "fee": 308,
+                  "height": -1,
+                  "tx_hash": "5571112ae7de5f1305e93f4da1fcc88ab6f1b8fe4db45a16c581a2ad92f61a38"
+                }
+              ]
+            ]
+          }
+        }
+      ],
       "tags": [
         {
           "name": "v1.4.3+"
@@ -115,12 +178,17 @@
       "name": "blockchain.address.get_scripthash",
       "summary": "Get an address scripthash",
       "description": "Translate a Bitcoin Cash address to a script_hash. This method is potentially useful for clients preferring to work with script hashes but lacking the local libraries necessary to generate them.",
-      "params": [],
-      "result": {
-        "name": "TODO",
-        "schema": {
-          "ref": "#/components/schemas/Null"
+      "params": [
+        {
+          "$ref": "#/components/schemas/Address"
         }
+      ],
+      "result": {
+        "name": "Script hash",
+        "schema": {
+          "$ref": "#/components/contentDescriptors/ScriptHash"
+        }
+         
       },
       "tags": [
         {
@@ -140,7 +208,7 @@
       "result": {
         "name": "TODO",
         "schema": {
-          "ref": "#/components/schemas/Null"
+          "$ref": "#/components/schemas/Address"
         }
       },
       "tags": [
@@ -257,12 +325,93 @@
     },
     {
       "name": "blockchain.scripthash.get_balance",
-      "summary": "Get scripthash balance",
+      "summary": "Get balance by scripthash",
       "description": "Return the confirmed and unconfirmed balances of a :ref:`script hash <script hashes>`.",
       "params": [],
       "result": {
-        "$ref": "#/components/contentDescriptors/ConfirmedAndUnconfirmed"
+        "$ref": "#/components/contentDescriptors/ScriptHash"
       },
+      "tags": [
+        {
+          "name": "v1.1+"
+        }
+      ]
+    },
+    {
+      "name": "blockchain.scripthash.get_history",
+      "summary": "Get transaction history scripthash",
+      "description": "Return the confirmed and unconfirmed history of a Bitcoin Cash address.",
+      "params": [
+        {
+          "$ref": "#/components/contentDescriptors/ScriptHash"
+        }
+      ],
+      "result": {
+        "$ref": "#/components/contentDescriptors/TransactionHistory"
+      },
+      "examples": [
+        {
+          "name": "Check some old coinbase",
+          "params": [
+            {
+              "name": "blockchain.scripthash.get_history",
+              "value": "TODO"
+            }
+          ],
+          "result": {
+            "name": "blockchain.scripthash.get_history",
+            "value": [
+              [
+                {
+                  "height": 200004,
+                  "tx_hash": "acc3758bd2a26f869fcc67d48ff30b96464d476bca82c1cd6656e7d506816412"
+                },
+                {
+                  "height": 215008,
+                  "tx_hash": "f3e1bf48975b8d6060a9de8884296abb80be618dc00ae3cb2f6cee3085e09403"
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "name": "See what the memo is `memo`ing",
+          "params": [
+            {
+              "name": "blockchain.scripthash.get_history",
+              "value": "TODO"
+            }
+          ],
+          "result": {
+            "name": "blockchain.scripthash.get_history",
+            "value": [
+              [
+                {
+                  "...": "confirmed truncated"
+                },
+                {
+                  "height": 652439,
+                  "tx_hash": "f49740a25351e794ed1fbc92550782c1f65daf97c3251f1a97263f73e0b9f80a"
+                },
+                {
+                  "height": 652439,
+                  "tx_hash": "fcde04d79392a8b5875d3e65dfd5471d4f09c94ca8978a0c5f1742ca090f1600"
+                },
+                {
+                  "fee": 192,
+                  "height": 0,
+                  "tx_hash": "2d581a4da53feab2f541c6b664a5051b034dd0925a90e77b5f487f9ae85d95bb"
+                },
+                {
+                  "fee": 308,
+                  "height": -1,
+                  "tx_hash": "5571112ae7de5f1305e93f4da1fcc88ab6f1b8fe4db45a16c581a2ad92f61a38"
+                }
+              ]
+            ]
+          }
+        }
+      ],
       "tags": [
         {
           "name": "v1.1+"
@@ -273,7 +422,11 @@
       "name": "blockchain.scripthash.get_mempool",
       "summary": "Get mempool transactions by script hash",
       "description": "Return the unconfirmed transactions of a script hash.",
-      "params": [],
+      "params": [
+        {
+          "$ref": "#/components/contentDescriptors/ScriptHash"
+        }
+      ],
       "result": {
         "$ref": "#/components/contentDescriptors/MempoolTransactions"
       },
@@ -287,7 +440,11 @@
       "name": "blockchain.scripthash.listunspent",
       "summary": "Get unspent outputs",
       "description": "Return an ordered list of UTXOs sent to a script hash.",
-      "params": [],
+      "params": [
+        {
+          "$ref": "#/components/contentDescriptors/ScriptHash"
+        }
+      ],
       "result": {
         "name": "TODO",
         "schema": {
@@ -332,7 +489,11 @@
       "name": "blockchain.scripthash.subscribe",
       "summary": "Subscribe to a script hash stream.",
       "description": "The client will receive a notification when the `status` of the script hash changes.",
-      "params": [],
+      "params": [
+        {
+          "$ref": "#/components/contentDescriptors/ScriptHash"
+        }
+      ],
       "result": {
         "name": "TODO",
         "schema": {
@@ -349,7 +510,11 @@
       "name": "blockchain.scripthash.unsubscribe",
       "summary": "Unsubscribe from a script hash stream.",
       "description": "Unsubscribe from a script hash, preventing future notifications if its `status` changes.",
-      "params": [],
+      "params": [
+        {
+          "$ref": "#/components/contentDescriptors/ScriptHash"
+        }
+      ],
       "result": {
         "name": "TODO",
         "schema": {
@@ -558,19 +723,41 @@
         "pattern": "((bitcoincash|bchreg|bchtest):)?(q|p)[a-z0-9]{41}",
         "example": "bchtest:qpttdv3qg2usm4nm7talhxhl05mlhms3ys43u76rn0"
       },
-      "MempoolTransaction": {
-        "title": "Mempool transaction",
+      "ConfirmedTransaction": {
+        "title": "Confirmed transaction",
         "type": "object",
+        "required": [
+          "height",
+          "tx_hash"
+        ],
         "properties": {
           "height": {
             "$ref": "#/components/schemas/Integer",
+            "description": "The integer height of the block the transaction was confirmed in."
+          },
+          "tx_hash": {
+            "$ref": "#/components/schemas/TransactionHash"
+          }
+        }
+      },
+      "MempoolTransaction": {
+        "title": "Mempool transaction",
+        "type": "object",
+        "required": [
+          "height",
+          "tx_hash",
+          "fee"
+        ],
+        "properties": {
+          "height": {
+            "type":"integer",
             "description": "`0` if all inputs are confirmed, and `-1` otherwise."
           },
           "tx_hash": {
             "$ref": "#/components/schemas/TransactionHash"
           },
           "fee": {
-            "$ref": "#/components/schemas/Integer",
+            "type":"integer",
             "description": "The transaction fee in minimum coin units (satoshis)."
           }
         }
@@ -585,6 +772,7 @@
     "contentDescriptors": {
       "MempoolTransactions": {
         "name": "Mempool Transactions",
+        "summary": "Transactions not yet included in a block",
         "description": "A list of mempool transactions in arbitrary order.",
         "schema": {
           "title": "List of transactions",
@@ -594,19 +782,18 @@
           }
         }
       },
-      "ConfirmedAndUnconfirmed": {
+      "Balances": {
         "name": "Balances",
+        "summary": "Sum of unspent inputs",
         "description": "The confirmed and unconfirmed balance in satoshis",
         "schema": {
           "properties": {
             "confirmed": {
-              "title": "Confirmed",
-              "$ref": "#/components/schemas/Integer",
+              "type":"integer",
               "description": "Amount included in blocks"
             },
             "unconfirmed": {
-              "title": "Unconfirmed",
-              "$ref": "#/components/schemas/Integer",
+              "type":"integer",
               "description": "Amount in mempool"
             }
           },
@@ -614,6 +801,38 @@
             "confirmed",
             "unconfirmed"
           ]
+        }
+      },
+      "ScriptHash": {
+        "name": "Scripthash",
+        "summary": "Hash of the locking bytes",
+        "schema": {
+          "title": "sha256",
+          "type": "string",
+          "pattern": "[a-z0-9]{64}",
+          "example": "5f923a2ae63c4de79d21fe806f3686850af2e61b99a174119624073139f394c2",
+          "description": "Big Endian hex string"
+        },
+        "required": true,
+        "description": "A script hash is the hash of the binary bytes of the locking script (ScriptPubKey), expressed as a hexadecimal string. The hash function to use is given by the “hash_function” member of server.features() (currently sha256() only). Like for block and transaction hashes, when converting the big-endian binary hash to a hexadecimal string the least-significant byte appears first, and the most-significant byte last."
+      },
+      "TransactionHistory": {
+        "name": "Transaction History",
+        "summary":"List of confirmed and unconfirmed transactions",
+        "description": "A list of confirmed transactions in blockchain order, with the output of Unconfirmed Transactions appended to the list.",
+        "schema": {
+          "title": "transactions",
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ConfirmedTransaction"
+              },
+              {
+                "$ref": "#/components/schemas/MempoolTransaction"
+              }
+            ]
+          }
         }
       }
     }
