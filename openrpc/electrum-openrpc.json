@@ -269,10 +269,7 @@
         }
       ],
       "result": {
-        "name": "TODO",
-        "schema": {
-          "ref": "#/components/schemas/Null"
-        }
+        "$ref": "#/components/contentDescriptors/Status"
       },
       "tags": [
         {
@@ -290,15 +287,12 @@
         }
       ],
       "result": {
-        "name": "TODO",
-        "schema": {
-          "ref": "#/components/schemas/Null"
-        }
+        "$ref": "#/components/contentDescriptors/UnsubscribeResponse"
       }
     },
     {
       "name": "blockchain.block.header",
-      "summary": "Get a block header",
+      "summary": "Get a block header 🚧",
       "description": "Return the block header at the given height.",
       "params": [
         {
@@ -319,7 +313,7 @@
     },
     {
       "name": "blockchain.block.headers",
-      "summary": "Get a chunk of headers",
+      "summary": "Get a chunk of headers 🚧",
       "description": "Return a concatenated chunk of block headers from the main chain.",
       "params": [],
       "result": {
@@ -331,7 +325,7 @@
     },
     {
       "name": "blockchain.estimatefee",
-      "summary": "Get a current fee estimate",
+      "summary": "Get a current fee estimate 🚧",
       "description": "Return the estimated transaction fee per kilobyte for a transaction to be confirmed within a certain number of blocks.",
       "params": [],
       "result": {
@@ -343,7 +337,7 @@
     },
     {
       "name": "blockchain.headers.subscribe",
-      "summary": "Subscribe to headers",
+      "summary": "Subscribe to headers 🚧",
       "description": "Subscribe to receive block headers when a new block is found.",
       "params": [],
       "result": {
@@ -355,7 +349,7 @@
     },
     {
       "name": "blockchain.relayfee",
-      "summary": "Get minimum fee estimate",
+      "summary": "Get minimum fee estimate 🚧",
       "description": "Return the minimum fee a low-priority transaction must pay in order to be accepted to the daemon's memory pool.",
       "params": [],
       "result": {
@@ -367,12 +361,36 @@
     },
     {
       "name": "blockchain.scripthash.get_balance",
-      "summary": "Get balance by scripthash",
-      "description": "Return the confirmed and unconfirmed balances of a :ref:`script hash <script hashes>`.",
-      "params": [],
+      "summary": "Get balance by script hash",
+      "description": "Return the confirmed and unconfirmed balances of a script hash",
+      "params": [
+        {
+          "$ref": "#/components/contentDescriptors/ScriptHash"
+        }
+      ],
       "result": {
-        "$ref": "#/components/contentDescriptors/ScriptHash"
+        "$ref": "#/components/contentDescriptors/Balances"
       },
+      "examples": [
+        {
+          "name": "Check get a balance",
+          "params": [
+            {
+              "name": "blockchain.scripthash.get_balance",
+              "value": "302fc274f9573e1526ff7c3ebe45074ecf10ccd2164da54120336c4c5f47192d"
+            }
+          ],
+          "result": {
+            "name": "blockchain.scripthash.get_balance",
+            "value": [
+              {
+                "confirmed": 1313538732,
+                "unconfirmed": 0
+              }
+            ]
+          }
+        }
+      ],
       "tags": [
         {
           "name": "v1.1+"
@@ -381,8 +399,8 @@
     },
     {
       "name": "blockchain.scripthash.get_history",
-      "summary": "Get transaction history scripthash",
-      "description": "Return the confirmed and unconfirmed history of a Bitcoin Cash address.",
+      "summary": "Get transaction history by script hash",
+      "description": "Return the confirmed and unconfirmed history by script hash.",
       "params": [
         {
           "$ref": "#/components/contentDescriptors/ScriptHash"
@@ -415,43 +433,6 @@
               ]
             ]
           }
-        },
-        {
-          "name": "See what the memo is `memo`ing",
-          "params": [
-            {
-              "name": "blockchain.scripthash.get_history",
-              "value": "TODO"
-            }
-          ],
-          "result": {
-            "name": "blockchain.scripthash.get_history",
-            "value": [
-              [
-                {
-                  "...": "confirmed truncated"
-                },
-                {
-                  "height": 652439,
-                  "tx_hash": "f49740a25351e794ed1fbc92550782c1f65daf97c3251f1a97263f73e0b9f80a"
-                },
-                {
-                  "height": 652439,
-                  "tx_hash": "fcde04d79392a8b5875d3e65dfd5471d4f09c94ca8978a0c5f1742ca090f1600"
-                },
-                {
-                  "fee": 192,
-                  "height": 0,
-                  "tx_hash": "2d581a4da53feab2f541c6b664a5051b034dd0925a90e77b5f487f9ae85d95bb"
-                },
-                {
-                  "fee": 308,
-                  "height": -1,
-                  "tx_hash": "5571112ae7de5f1305e93f4da1fcc88ab6f1b8fe4db45a16c581a2ad92f61a38"
-                }
-              ]
-            ]
-          }
         }
       ],
       "tags": [
@@ -472,6 +453,27 @@
       "result": {
         "$ref": "#/components/contentDescriptors/MempoolTransactions"
       },
+      "examples": [
+        {
+          "name": "blockchain.scripthash.get_mempool",
+          "params": [
+            {
+              "name": "blockchain.scripthash.get_mempool",
+              "value": "302fc274f9573e1526ff7c3ebe45074ecf10ccd2164da54120336c4c5f47192d"
+            }
+          ],
+          "result": {
+            "name": "blockchain.scripthash.get_mempool",
+            "value": [
+              {
+                "fee": 416,
+                "height": 0,
+                "tx_hash": "fc1e4a2365e3bf2fe6a20ab23731b1deba2789d40c092a2d55ea0242a50b6f08"
+              }
+            ]
+          }
+        }
+      ],
       "tags": [
         {
           "name": "v1.1+"
@@ -534,11 +536,27 @@
         }
       ],
       "result": {
-        "name": "TODO",
-        "schema": {
-          "ref": "#/components/schemas/Null"
-        }
+        "$ref": "#/components/contentDescriptors/Status"
       },
+      "examples": [
+        {
+          "name": "blockchain.scripthash.subscribe",
+          "params": [
+            {
+              "name": "blockchain.scripthash.subscribe",
+              "value": "302fc274f9573e1526ff7c3ebe45074ecf10ccd2164da54120336c4c5f47192d"
+            }
+          ],
+          "result": {
+            "name": "blockchain.scripthash.subscribe",
+            "value": [
+              {
+                "tx_hash": "9f2c45a12db0144909b5db269415f7319179105982ac70ed80d76ea79d923ebf"
+              }
+            ]
+          }
+        }
+      ],
       "tags": [
         {
           "name": "v1.1+"
@@ -555,10 +573,7 @@
         }
       ],
       "result": {
-        "name": "TODO",
-        "schema": {
-          "ref": "#/components/schemas/Null"
-        }
+        "$ref": "#/components/contentDescriptors/UnsubscribeResponse"
       },
       "tags": [
         {
@@ -568,20 +583,25 @@
     },
     {
       "name": "blockchain.transaction.broadcast",
-      "summary": "Broadcast a transaction to the network.",
+      "summary": "Broadcast a transaction to the network. 🚧",
       "description": "**Note** protocol version 1.0 (only) does not respond according to the JSON RPC specification if an error occurs.  If the daemon rejects the transaction, the result is the error message string from the daemon, as if the call were successful.  The client needs to determine if an error occurred by comparing the result to the expected transaction hash.",
-      "params": [],
-      "result": {
-        "name": "TODO",
-        "schema": {
-          "ref": "#/components/schemas/Null"
+      "params": [
+        {
+          "$ref": "#/components/contentDescriptors/RawTransaction"
         }
+      ],
+      "result": {
+        "$ref": "#/components/schemas/TransactionHash"
       }
     },
     {
       "name": "blockchain.transaction.get",
-      "summary": "Get a raw transaction.",
-      "params": [],
+      "summary": "Get a raw transaction. 🚧",
+      "params": [
+        {
+          "$ref": "#/components/contentDescriptors/TransactionRequest"
+        }
+      ],
       "result": {
         "name": "TODO",
         "schema": {
@@ -591,7 +611,7 @@
     },
     {
       "name": "blockchain.transaction.get_merkle",
-      "summary": "Get the merkle proof for a transaction",
+      "summary": "Get the merkle proof for a transaction 🚧",
       "description": "Return the merkle branch to a confirmed transaction given its hash and height.",
       "params": [],
       "result": {
@@ -603,7 +623,7 @@
     },
     {
       "name": "blockchain.transaction.id_from_pos",
-      "summary": "Get a transaction (with proof) by block and position",
+      "summary": "Get a transaction (with proof) by block and position 🚧",
       "description": "Return a transaction hash and optionally a merkle proof, given a block height and a position in the block.",
       "params": [],
       "result": {
@@ -620,7 +640,7 @@
     },
     {
       "name": "mempool.get_fee_histogram",
-      "summary": "Get the fee histogram",
+      "summary": "Get the fee histogram 🚧",
       "description": "Return a histogram of the fee rates paid by transactions in the memory pool, weighted by transaction size.",
       "params": [],
       "result": {
@@ -637,7 +657,7 @@
     },
     {
       "name": "server.add_peer",
-      "summary": "Announce a server",
+      "summary": "Announce a server 🚧",
       "description": "A newly-started server uses this call to get itself into other servers' peers lists.  It **SHOULD NOT** be used by wallet clients.",
       "params": [],
       "result": {
@@ -654,7 +674,7 @@
     },
     {
       "name": "server.banner",
-      "summary": "Show the console banner",
+      "summary": "Show the console banner 🚧",
       "description": "Return a banner to be shown in the Electrum console.",
       "params": [],
       "result": {
@@ -666,7 +686,7 @@
     },
     {
       "name": "server.donation_address",
-      "summary": "Get the server donation address",
+      "summary": "Get the server donation address 🚧",
       "description": "Return a server donation address.",
       "params": [],
       "result": {
@@ -678,7 +698,7 @@
     },
     {
       "name": "server.features",
-      "summary": "Get the server features",
+      "summary": "Get the server features 🚧",
       "description": "Return a list of features and services supported by the server.",
       "params": [],
       "result": {
@@ -690,7 +710,7 @@
     },
     {
       "name": "server.peers.subscribe",
-      "summary": "Get a list of server peers",
+      "summary": "Get a list of server peers🚧",
       "description": "Return a list of peer servers.  Despite the name this is not a subscription and the server must send no notifications.",
       "params": [],
       "result": {
@@ -786,7 +806,16 @@
         "type": "integer"
       },
       "Address": {
-        "$ref": "#/components/contentDescriptors/Address"
+        "title": "address",
+        "type": "string",
+        "pattern": "((bitcoincash|bchreg|bchtest):)?(q|p)[a-z0-9]{41}",
+        "example": "bchtest:qpttdv3qg2usm4nm7talhxhl05mlhms3ys43u76rn0",
+        "description": "Big Endian hex string"
+      },
+      "RawTransaction": {
+        "title": "transaction",
+        "type": "string",
+        "pattern": "[0-9A-Fa-f]+"
       },
       "ClientVersion": {
         "title": "client version",
@@ -871,6 +900,7 @@
         }
       },
       "TransactionHash": {
+        "title": "tx hash",
         "description": "Transaction Hash",
         "type": "string",
         "pattern": "[0-9A-Fa-f]{64}",
@@ -902,6 +932,13 @@
             "description": "The amount in satoshis."
           }
         }
+      },
+      "VerboseBoolean": {
+        "name": "Verbose Flag",
+        "title": "verbose",
+        "summary": "Detailed Results",
+        "description": "Whether a verbose response is required.",
+        "type": "boolean"
       }
     },
     "contentDescriptors": {
@@ -943,17 +980,20 @@
         "required": true,
         "description": "The address as a Cash Address string (with or without prefix). Some server implementations may also support Legacy (base58) addresses but are not required to do so by this specification.",
         "schema": {
-          "title": "address",
-          "type": "string",
-          "required": [],
-          "pattern": "((bitcoincash|bchreg|bchtest):)?(q|p)[a-z0-9]{41}",
-          "example": "bchtest:qpttdv3qg2usm4nm7talhxhl05mlhms3ys43u76rn0",
-          "description": "Big Endian hex string"
+          "$ref": "#/components/schemas/Address"
         },
         "summary": "A cashaddr passed as a string"
       },
+      "RawTransaction": {
+        "name": "RawTransaction",
+        "required": true,
+        "schema": {
+          "$ref": "#/components/schemas/RawTransaction"
+        },
+        "summary": "A raw transaction"
+      },
       "ScriptHash": {
-        "name": "Scripthash",
+        "name": "Script hash",
         "summary": "Hash of the locking bytes",
         "schema": {
           "title": "sha256",
@@ -982,6 +1022,16 @@
           }
         }
       },
+      "UnsubscribeResponse": {
+        "name": "Unsubscribe Response",
+        "summary": "Subscription removed boolean",
+        "description": "Returns `true` if the address was subscribed to, otherwise `false`. Note that `false` might be returned even for something subscribed to earlier, because the server can drop subscriptions in rare circumstances.",
+        "required": true,
+        "schema": {
+          "description": "",
+          "type": "boolean"
+        }
+      },
       "TransactionHistory": {
         "name": "Transaction History",
         "summary": "List of confirmed and unconfirmed transactions",
@@ -1001,6 +1051,25 @@
           }
         }
       },
+      "TransactionRequest": {
+        "name": "Transaction Request",
+        "summary": "Get a transaction",
+        "description": "Return a raw transaction.",
+        "schema": {
+          "title": "transaction request",
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TransactionHash"
+              },
+              {
+                "$ref": "#/components/schemas/VerboseBoolean"
+              }
+            ]
+          }
+        }
+      },
       "UnspentOutputs": {
         "name": "Unspent Outputs",
         "summary": "List of UTXOs",
@@ -1013,7 +1082,7 @@
           }
         }
       },
-      "status": {
+      "Status": {
         "summary": "SHA256 hash of concatenated transactions",
         "name": "Status",
         "description": "To calculate the status of a script hash (or address): \n\n1. order confirmed transactions to the script hash by increasing height (and position in the block if there are more than one in a block)\n\n2. form a string that is the concatenation of strings 'tx_hash:height:' for each transaction in order, where: tx_hash is the transaction hash in hexadecimal height is the height of the block it is in.\n3. Next, with mempool transactions in any order, append a similar string for those transactions, but where height is -1 if the transaction has at least one unconfirmed input, and 0 if all inputs are confirmed.\n\n4. The status of the script hash is the sha256() hash of the full string expressed as a hexadecimal string, or null if the string is empty because there are no transactions.",
