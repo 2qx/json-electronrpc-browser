@@ -43,7 +43,7 @@
       "description": "Return the confirmed and unconfirmed balances of a Bitcoin Cash address.",
       "params": [
         {
-          "$ref": "#/components/schemas/Address"
+          "$ref": "#/components/contentDescriptors/Address"
         }
       ],
       "result": {
@@ -69,6 +69,7 @@
           }
         }
       ],
+      "paramStructure": "by-position",
       "tags": [
         {
           "name": "v1.4.3+"
@@ -81,7 +82,7 @@
       "description": "Return the confirmed and unconfirmed history of a Bitcoin Cash address.",
       "params": [
         {
-          "$ref": "#/components/schemas/Address"
+          "$ref": "#/components/contentDescriptors/Address"
         }
       ],
       "result": {
@@ -150,6 +151,7 @@
           }
         }
       ],
+      "paramStructure": "by-position",
       "tags": [
         {
           "name": "v1.4.3+"
@@ -162,7 +164,7 @@
       "description": "Return the unconfirmed transactions of a Bitcoin Cash address.",
       "params": [
         {
-          "$ref": "#/components/schemas/Address"
+          "$ref": "#/components/contentDescriptors/Address"
         }
       ],
       "result": {
@@ -189,6 +191,7 @@
           }
         }
       ],
+      "paramStructure": "by-position",
       "tags": [
         {
           "name": "v1.4.3+"
@@ -201,12 +204,13 @@
       "description": "Translate a Bitcoin Cash address to a script_hash. This method is potentially useful for clients preferring to work with script hashes but lacking the local libraries necessary to generate them.",
       "params": [
         {
-          "$ref": "#/components/schemas/Address"
+          "$ref": "#/components/contentDescriptors/Address"
         }
       ],
       "result": {
         "$ref": "#/components/contentDescriptors/ScriptHash"
       },
+      "paramStructure": "by-position",
       "tags": [
         {
           "name": "v1.4.3+"
@@ -219,7 +223,7 @@
       "description": "Return an ordered list of UTXOs sent to a Bitcoin Cash address.",
       "params": [
         {
-          "$ref": "#/components/schemas/Address"
+          "$ref": "#/components/contentDescriptors/Address"
         }
       ],
       "result": {
@@ -253,6 +257,7 @@
           }
         }
       ],
+      "paramStructure": "by-position",
       "tags": [
         {
           "name": "v1.4.3+"
@@ -265,12 +270,13 @@
       "description": "Subscribe to a Bitcoin Cash address.",
       "params": [
         {
-          "$ref": "#/components/schemas/Address"
+          "$ref": "#/components/contentDescriptors/Address"
         }
       ],
       "result": {
         "$ref": "#/components/contentDescriptors/Status"
       },
+      "paramStructure": "by-position",
       "tags": [
         {
           "name": "v1.4.3+"
@@ -283,12 +289,13 @@
       "description": "Unsubscribe from a Bitcoin Cash address, preventing future notifications if its status changes.",
       "params": [
         {
-          "$ref": "#/components/schemas/Address"
+          "$ref": "#/components/contentDescriptors/Address"
         }
       ],
       "result": {
         "$ref": "#/components/contentDescriptors/UnsubscribeResponse"
-      }
+      },
+      "paramStructure": "by-position"
     },
     {
       "name": "blockchain.block.header",
@@ -305,6 +312,7 @@
           "ref": "#/components/schemas/Null"
         }
       },
+      "paramStructure": "by-position",
       "tags": [
         {
           "name": "v1.2+"
@@ -321,7 +329,8 @@
         "schema": {
           "ref": "#/components/schemas/Null"
         }
-      }
+      },
+      "paramStructure": "by-position"
     },
     {
       "name": "blockchain.estimatefee",
@@ -333,7 +342,8 @@
         "schema": {
           "ref": "#/components/schemas/Null"
         }
-      }
+      },
+      "paramStructure": "by-position"
     },
     {
       "name": "blockchain.headers.subscribe",
@@ -345,7 +355,8 @@
         "schema": {
           "ref": "#/components/schemas/Null"
         }
-      }
+      },
+      "paramStructure": "by-position"
     },
     {
       "name": "blockchain.relayfee",
@@ -357,7 +368,8 @@
         "schema": {
           "ref": "#/components/schemas/Null"
         }
-      }
+      },
+      "paramStructure": "by-position"
     },
     {
       "name": "blockchain.scripthash.get_balance",
@@ -391,6 +403,7 @@
           }
         }
       ],
+      "paramStructure": "by-position",
       "tags": [
         {
           "name": "v1.1+"
@@ -435,6 +448,7 @@
           }
         }
       ],
+      "paramStructure": "by-position",
       "tags": [
         {
           "name": "v1.1+"
@@ -474,6 +488,7 @@
           }
         }
       ],
+      "paramStructure": "by-position",
       "tags": [
         {
           "name": "v1.1+"
@@ -520,6 +535,7 @@
           }
         }
       ],
+      "paramStructure": "by-position",
       "tags": [
         {
           "name": "v1.1+"
@@ -557,6 +573,7 @@
           }
         }
       ],
+      "paramStructure": "by-position",
       "tags": [
         {
           "name": "v1.1+"
@@ -575,6 +592,7 @@
       "result": {
         "$ref": "#/components/contentDescriptors/UnsubscribeResponse"
       },
+      "paramStructure": "by-position",
       "tags": [
         {
           "name": "v1.4.2+"
@@ -592,7 +610,8 @@
       ],
       "result": {
         "$ref": "#/components/schemas/TransactionHash"
-      }
+      },
+      "paramStructure": "by-position"
     },
     {
       "name": "blockchain.transaction.get",
@@ -607,7 +626,8 @@
         "schema": {
           "ref": "#/components/schemas/Null"
         }
-      }
+      },
+      "paramStructure": "by-position"
     },
     {
       "name": "blockchain.transaction.get_merkle",
@@ -619,7 +639,8 @@
         "schema": {
           "ref": "#/components/schemas/Null"
         }
-      }
+      },
+      "paramStructure": "by-position"
     },
     {
       "name": "blockchain.transaction.id_from_pos",
@@ -632,6 +653,7 @@
           "ref": "#/components/schemas/Null"
         }
       },
+      "paramStructure": "by-position",
       "tags": [
         {
           "name": "v1.4+"
@@ -649,6 +671,7 @@
           "ref": "#/components/schemas/Null"
         }
       },
+      "paramStructure": "by-position",
       "tags": [
         {
           "name": "v1.2+"
@@ -666,6 +689,7 @@
           "ref": "#/components/schemas/Null"
         }
       },
+      "paramStructure": "by-position",
       "tags": [
         {
           "name": "v1.1+"
@@ -682,7 +706,8 @@
         "schema": {
           "ref": "#/components/schemas/Null"
         }
-      }
+      },
+      "paramStructure": "by-position"
     },
     {
       "name": "server.donation_address",
@@ -694,7 +719,8 @@
         "schema": {
           "ref": "#/components/schemas/Null"
         }
-      }
+      },
+      "paramStructure": "by-position"
     },
     {
       "name": "server.features",
@@ -706,7 +732,8 @@
         "schema": {
           "ref": "#/components/schemas/Null"
         }
-      }
+      },
+      "paramStructure": "by-position"
     },
     {
       "name": "server.peers.subscribe",
@@ -718,7 +745,8 @@
         "schema": {
           "ref": "#/components/schemas/Null"
         }
-      }
+      },
+      "paramStructure": "by-position"
     },
     {
       "name": "server.ping",
@@ -732,6 +760,7 @@
           "type": "null"
         }
       },
+      "paramStructure": "by-position",
       "tags": [
         {
           "name": "v1.2+"
@@ -786,7 +815,8 @@
             ]
           }
         }
-      ]
+      ],
+      "paramStructure": "by-position"
     }
   ],
   "components": {
@@ -980,7 +1010,12 @@
         "required": true,
         "description": "The address as a Cash Address string (with or without prefix). Some server implementations may also support Legacy (base58) addresses but are not required to do so by this specification.",
         "schema": {
-          "$ref": "#/components/schemas/Address"
+          "title": "address",
+          "type": "string",
+          "required": [],
+          "pattern": "((bitcoincash|bchreg|bchtest):)?(q|p)[a-z0-9]{41}",
+          "example": "bchtest:qpttdv3qg2usm4nm7talhxhl05mlhms3ys43u76rn0",
+          "description": "Big Endian hex string"
         },
         "summary": "A cashaddr passed as a string"
       },
