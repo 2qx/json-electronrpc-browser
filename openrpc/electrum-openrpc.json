@@ -3,7 +3,7 @@
   "info": {
     "version": "1.4.4-draft",
     "title": "Electrum Cash JSON-RPC",
-    "description": "API specification for Electrum-Cash JSON-RPC",
+    "description": "API specification for Electrum-Cash JSON-RPC. This version of the specification is a work in progress. For the [official specs click here](https://bitcoincash.network/electrum/)",
     "license": {
       "name": "The MIT License (MIT)",
       "url": "https://raw.githubusercontent.com/2qx/json-electronrpc-browser/main/LICENSE"
@@ -309,7 +309,7 @@
       "result": {
         "name": "TODO",
         "schema": {
-          "ref": "#/components/schemas/Null"
+          "$ref": "#/components/schemas/Null"
         }
       },
       "paramStructure": "by-position",
@@ -327,7 +327,7 @@
       "result": {
         "name": "TODO",
         "schema": {
-          "ref": "#/components/schemas/Null"
+          "$ref": "#/components/schemas/Null"
         }
       },
       "paramStructure": "by-position"
@@ -340,7 +340,7 @@
       "result": {
         "name": "TODO",
         "schema": {
-          "ref": "#/components/schemas/Null"
+          "$ref": "#/components/schemas/Null"
         }
       },
       "paramStructure": "by-position"
@@ -353,7 +353,7 @@
       "result": {
         "name": "TODO",
         "schema": {
-          "ref": "#/components/schemas/Null"
+          "$ref": "#/components/schemas/Null"
         }
       },
       "paramStructure": "by-position"
@@ -366,7 +366,7 @@
       "result": {
         "name": "TODO",
         "schema": {
-          "ref": "#/components/schemas/Null"
+          "$ref": "#/components/schemas/Null"
         }
       },
       "paramStructure": "by-position"
@@ -624,7 +624,7 @@
       "result": {
         "name": "TODO",
         "schema": {
-          "ref": "#/components/schemas/Null"
+          "$ref": "#/components/schemas/Null"
         }
       },
       "paramStructure": "by-position"
@@ -637,7 +637,7 @@
       "result": {
         "name": "TODO",
         "schema": {
-          "ref": "#/components/schemas/Null"
+          "$ref": "#/components/schemas/Null"
         }
       },
       "paramStructure": "by-position"
@@ -650,7 +650,7 @@
       "result": {
         "name": "TODO",
         "schema": {
-          "ref": "#/components/schemas/Null"
+          "$ref": "#/components/schemas/Null"
         }
       },
       "paramStructure": "by-position",
@@ -668,7 +668,7 @@
       "result": {
         "name": "TODO",
         "schema": {
-          "ref": "#/components/schemas/Null"
+          "$ref": "#/components/schemas/Null"
         }
       },
       "paramStructure": "by-position",
@@ -686,7 +686,7 @@
       "result": {
         "name": "TODO",
         "schema": {
-          "ref": "#/components/schemas/Null"
+          "$ref": "#/components/schemas/Null"
         }
       },
       "paramStructure": "by-position",
@@ -704,7 +704,7 @@
       "result": {
         "name": "TODO",
         "schema": {
-          "ref": "#/components/schemas/Null"
+          "$ref": "#/components/schemas/Null"
         }
       },
       "paramStructure": "by-position"
@@ -717,7 +717,7 @@
       "result": {
         "name": "TODO",
         "schema": {
-          "ref": "#/components/schemas/Null"
+          "$ref": "#/components/schemas/Null"
         }
       },
       "paramStructure": "by-position"
@@ -730,7 +730,7 @@
       "result": {
         "name": "TODO",
         "schema": {
-          "ref": "#/components/schemas/Null"
+          "$ref": "#/components/schemas/Null"
         }
       },
       "paramStructure": "by-position"
@@ -743,7 +743,7 @@
       "result": {
         "name": "TODO",
         "schema": {
-          "ref": "#/components/schemas/Null"
+          "$ref": "#/components/schemas/Null"
         }
       },
       "paramStructure": "by-position"
